@@ -1,5 +1,5 @@
 export class TicketDto {
-  id: string;
+  _id?: string;
   ticket: string | null | undefined;
   distrito: string;
   supervisor: string;

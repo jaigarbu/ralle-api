@@ -20,9 +20,10 @@ export class TypifyController {
 
   @Post('set-ticket')
   async setTicket(@Body() ticketDto: TicketDto) {
-    if (!ticketDto.ticket)
+    console.log(ticketDto);
+    if (!ticketDto._id || !ticketDto.ticket)
       throw new BadRequestException('No hay un ticket para registrar');
-    return this.typifyService.setTicket(ticketDto.id, ticketDto.ticket);
+    return this.typifyService.setTicket(ticketDto._id, ticketDto.ticket);
   }
 
   @Post('set-db-tickets')
