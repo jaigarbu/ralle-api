@@ -13,13 +13,29 @@ export class TypifyService {
     @InjectModel('BaseDBModel') private baseModel: Model<BaseDB>,
   ) {}
 
-  async getTicket(): Promise<Ticket | null> {
-    return this.ticketModel
-      .findOne({
-        $or: [{ ticket: { $exists: false } }, { ticket: null }, { ticket: '' }],
-      })
-      .exec();
-  }
+  async getTicket(): Promise<any> {
+  const ticket = await this.ticketModel
+    .findOne({
+      $or: [{ ticket: { $exists: false } }, { ticket: null }, { ticket: '' }],
+    })
+    .lean() // <--- Convierte a objeto plano
+    .exec();
+
+  if (!ticket) throw new BadRequestException("Ya no hay casos");
+
+  const ticketBase = await this.baseModel.findOne({
+    supervisor: ticket.supervisor,
+    motivo: ticket.motivo
+  }).lean().exec();
+
+  if (!ticketBase) throw new BadRequestException("Ya no hay ticket de referencia");
+
+  // Ahora puedes agregar la propiedad fácilmente
+  return {
+    ...ticket,
+    ticketBase: ticketBase.ticket
+  };
+}
 
   async setTicket(id: string, nuevoTicket: string) {
     return this.ticketModel

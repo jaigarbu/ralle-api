@@ -9,4 +9,5 @@ export class TicketDto {
   solicitud: string;
   resolucion: string;
   fecha: string;
+  ticketBase?: number;
 }
