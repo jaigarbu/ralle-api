@@ -6,5 +6,7 @@ export class TicketDto {
   CIN: number;
   codigo: number;
   motivo: string;
+  solicitud: string;
+  resolucion: string;
   fecha: string;
 }
